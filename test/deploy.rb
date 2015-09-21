@@ -1,24 +1,27 @@
 require 'kanaveral'
-require 'commands'
+require_relative 'commands'
 
 Kanaveral::Base.deployer do
-
+  
   server 'hopper-0' do |s|
     s.user = 'philippe'
     s.host = 'philae'
     s.root = '/home/philippe'
+    s.password = true
   end
   
   server 'hopper-1' do |s|
     s.user = 'philippe'
     s.host = 'philae'
     s.root = '/home/philippe'
+    s.password = true
   end
 
   server 'hopper-2' do |s|
     s.user = 'philippe'
     s.host = 'philae'
     s.root = '/home/philippe'
+    s.password = true
   end
   
   deploy do

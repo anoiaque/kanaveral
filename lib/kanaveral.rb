@@ -1,13 +1,15 @@
 require "kanaveral/version"
 require 'ostruct'
 require 'net/ssh'
+require 'io/console'
 require 'kanaveral/extensions'
+require 'kanaveral/output'
 
 module Kanaveral
   using Kanaveral::Extensions
   
   class Server
-    attr_accessor :user, :host, :root, :name
+    attr_accessor :user, :host, :root, :name, :password
     
     def initialize name=nil
       @name = name
@@ -33,8 +35,9 @@ module Kanaveral
     
     def remote name, &block
       @server = @context.servers[name]
+      password = ask_password if @server.password
       
-      Net::SSH.start(@server.host, @server.user, password:nil) do |ssh|
+      Net::SSH.start(@server.host, @server.user, password: password) do |ssh|
         @ssh = ssh
         instance_eval(&block)
       end
@@ -51,6 +54,12 @@ module Kanaveral
     end
     
     private
+    
+    def ask_password
+      Kanaveral::Output.ask "Password for #{@server.name} : "
+
+      STDIN.noecho(&:gets).chop
+    end
     
     def cmd command
       Object.const_get %(Kanaveral::Command::#{command.to_s.camelize})
