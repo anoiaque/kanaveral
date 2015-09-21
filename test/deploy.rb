@@ -27,7 +27,7 @@ Kanaveral::Base.deployer do
   deploy do
     
     local do
-      run :changelog, to: :commits
+      run :changelog, to: :commits, notice: 'Create changelog from commits'
       run :git, :push
     end 
 
