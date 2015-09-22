@@ -21,7 +21,11 @@ module Kanaveral
     end
     
     def self.command cmd, args
-      text = args.is_a?(Hash) && args[:notice] || "Run #{cmd} #{args}"
+      text = if cmd.respond_to?(:notice)
+        cmd.notice(args)
+      else
+        "Run #{cmd.name}"
+      end
       text = '-> ' + text
       notice(text)
     end

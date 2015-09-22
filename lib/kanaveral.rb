@@ -52,11 +52,13 @@ module Kanaveral
     end
     
     def run command, args={}
-      Kanaveral::Output.command(command, args)
       
       cmd = cmd(command).new
       cmd.server = @server
       cmd.context = @context
+      cmd.name = command
+      
+      Kanaveral::Output.command(cmd, args)
       
       output = @ssh ? @ssh.exec!(cmd.instruction(args)) : `#{cmd.instruction(args)}`
 
@@ -71,6 +73,7 @@ module Kanaveral
     def cmd command
       cmd = Object.const_get %(Kanaveral::Command::#{command.to_s.camelize})
       cmd.send(:attr_accessor, :server)
+      cmd.send(:attr_accessor, :name)
       cmd.send(:attr_accessor, :context)
       cmd
     end
