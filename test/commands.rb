@@ -9,7 +9,7 @@ end
 
 module Kanaveral
   module Command
-    class Assets
+    class AssetsPrecompile
       def instruction args={}
       end
     end
@@ -18,7 +18,7 @@ end
 
 module Kanaveral
   module Command
-    class Unicorn
+    class UnicornUpgrade
       def instruction args
       end
     end
@@ -30,7 +30,7 @@ module Kanaveral
   module Command
     class Changelog
       def instruction args={}
-        "pwd"
+        "git log origin/master..master --format=short"
       end
     end
   end
@@ -40,7 +40,8 @@ module Kanaveral
   module Command
     class Newrelic
       def instruction args={}
-                
+        p context.commits
+        "echo Hello #{context.commits}"
       end
     end
   end
@@ -48,9 +49,19 @@ end
 
 module Kanaveral
   module Command
-    class Git
+    class GitPush
       def instruction args={}
-        "git #{args} origin master"        
+        "git push origin master"        
+      end
+    end
+  end
+end
+
+module Kanaveral
+  module Command
+    class GitPull
+      def instruction args={}
+        "git pull origin master"        
       end
     end
   end
@@ -68,7 +79,7 @@ end
 
 module Kanaveral
   module Command
-    class DelayedJob
+    class DelayedJobRestart
       def instruction args={}
       end
     end
