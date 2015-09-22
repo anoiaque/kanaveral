@@ -31,17 +31,17 @@ Kanaveral::Base.deployer do
       run :git_push
     end 
 
-    # remotes('hopper-0', 'hopper-2', 'hopper-1') do
-    #   run :cd_root
-    #   run :git_pull
-    #   run :bundler
-    #   run :assets_precompile
-    #   run :unicorn_upgrade
-    # end
-    #
-    # remote('hopper-1') do
-    #   run :delayed_job_restart
-    # end
+    remotes('hopper-0', 'hopper-2', 'hopper-1') do
+      run :cd_root
+      run :git_pull
+      run :bundler
+      run :assets_precompile
+      run :unicorn_upgrade
+    end
+
+    remote('hopper-1') do
+      run :delayed_job_restart
+    end
     
     local do
       run :newrelic

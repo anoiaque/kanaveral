@@ -9,6 +9,7 @@ module Kanaveral
     end
     
     def self.cmd_output text
+      text ||= ''
       cr
       text = ' '.freeze + text
       print Rainbow(text).cyan

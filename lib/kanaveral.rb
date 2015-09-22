@@ -63,7 +63,7 @@ module Kanaveral
 
       @context.send("#{args[:to]}=", output) if args[:to]
 
-      Kanaveral::Output.cmd_output(output) if @context.output
+      Kanaveral::Output.cmd_output(output) unless @context.nooutput
       output
     end
     
