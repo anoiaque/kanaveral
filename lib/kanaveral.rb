@@ -52,7 +52,6 @@ module Kanaveral
     end
     
     def run command, args={}
-      
       cmd = cmd(command).new
       cmd.server = @server
       cmd.context = @context
@@ -64,7 +63,7 @@ module Kanaveral
 
       @context.send("#{args[:to]}=", output) if args[:to]
 
-      Kanaveral::Output.cmd_output(output)
+      Kanaveral::Output.cmd_output(output) if @context.output
       output
     end
     
