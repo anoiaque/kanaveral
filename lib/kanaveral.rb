@@ -61,6 +61,8 @@ module Kanaveral
       output = @ssh ? @ssh.exec!(cmd.instruction(args)) : `#{cmd.instruction(args)}`
 
       @context.send("#{args[:to]}=", output) if args[:to]
+
+      Kanaveral::Output.cmd_output(output)
       output
     end
     
@@ -77,6 +79,7 @@ module Kanaveral
   class Context < OpenStruct;end
   
   class Base 
+    ENV_KEY = 'KANAVERAL_ENV'
     
     def server name
       @servers ||= {}
@@ -85,7 +88,11 @@ module Kanaveral
       @servers[name] = server
     end
     
-    def deploy &block
+    def deploy env=:development, &block
+      env_help()
+      
+      return unless ENV[ENV_KEY] == env.to_s 
+      
       @context = Context.new(servers: @servers)
       @deployer = Deploy.new(@context)
       @deployer.instance_eval(&block)
@@ -93,6 +100,15 @@ module Kanaveral
   
     def self.deployer &block
       self.new.instance_eval(&block)
+    end
+    
+    private
+    
+    def env_help
+      Kanaveral::Output.warn("Current environment : #{ENV[ENV_KEY] || 'Not set via KANAVERAL_ENV'}")
+      unless ENV[ENV_KEY]
+        Kanaveral::Output.warn("Pass Kanaveral environment as shell variable, ie KANAVERAL_ENV=production bundle exec ...")
+      end
     end
   end
 end

@@ -24,15 +24,15 @@ Kanaveral::Base.deployer do
     s.password = true
   end
   
-  deploy do
+  deploy(:production) do
     
     local do
-      run :changelog, to: :commits, notice: 'Create changelog from commits'
-      run :git_push, notice: 'Push to github origin/master'
+      run :changelog, to: :commits
+      run :git_push
     end 
 
     # remotes('hopper-0', 'hopper-2', 'hopper-1') do
-    #   run :pwd
+    #   run :cd_root
     #   run :git_pull
     #   run :bundler
     #   run :assets_precompile

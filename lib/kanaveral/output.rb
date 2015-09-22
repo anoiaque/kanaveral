@@ -8,6 +8,13 @@ module Kanaveral
       password
     end
     
+    def self.cmd_output text
+      cr
+      text = ' '.freeze + text
+      print Rainbow(text).cyan
+      cr
+    end
+    
     def self.ask text
       cr
       print Rainbow(text).green
@@ -33,6 +40,10 @@ module Kanaveral
     
     def self.notice text
       puts Rainbow(text).white
+    end
+    
+    def self.warn text
+      puts Rainbow(text).magenta
     end
     
     def self.cr
