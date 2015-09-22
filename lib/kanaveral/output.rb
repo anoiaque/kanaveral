@@ -26,6 +26,7 @@ module Kanaveral
       else
         "Run #{cmd.name}"
       end
+      cr
       text = '-> ' + text
       notice(text)
     end
@@ -47,7 +48,7 @@ module Kanaveral
     end
     
     def self.warn text
-      puts Rainbow(text).magenta
+      puts Rainbow(text).yellow.bright.underline
     end
     
     def self.cr

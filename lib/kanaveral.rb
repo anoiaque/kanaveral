@@ -107,7 +107,7 @@ module Kanaveral
     private
     
     def env_help
-      Kanaveral::Output.warn("Current environment : #{ENV[ENV_KEY] || 'Not set via KANAVERAL_ENV'}")
+      Kanaveral::Output.warn("Environment : #{ENV[ENV_KEY] || 'Not set via KANAVERAL_ENV'}")
       unless ENV[ENV_KEY]
         Kanaveral::Output.warn("Pass Kanaveral environment as shell variable, ie KANAVERAL_ENV=production bundle exec ...")
       end
