@@ -3,7 +3,7 @@ module Kanaveral
     
     class Bundler
       def instruction
-        "bundle --quiet --without development test"
+        ". ~/.profile && cd #{server.root} && bundle --quiet --without development test"
       end
       
       def notice
@@ -35,11 +35,7 @@ module Kanaveral
     
     class Newrelic
       def instruction
-        if context.commits.length > 0
-          "echo '#{context.commits}' | newrelic deployments -c"
-        else
-          "echo helo > /dev/null"
-        end
+        "echo '#{context.commits}' | newrelic deployments -c"
       end
     end
     
@@ -57,11 +53,9 @@ module Kanaveral
       def instruction
         "git pull origin master"        
       end
-    end
-    
-    class Setup
-      def instruction
-        "cd #{server.root} && ls"
+      
+      def notice
+        "Pull from origin/master"
       end
     end
     

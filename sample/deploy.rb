@@ -3,24 +3,17 @@ require_relative 'commands'
 
 Kanaveral::Base.deployer do
   
-  server 'hopper-0' do |s|
+  server 'server-1' do |s|
     s.user = 'philippe'
     s.host = 'philae'
-    s.root = '/home/philippe'
+    s.root = '/home/www/application'
     s.password = true
   end
   
-  server 'hopper-1' do |s|
+  server 'server-2' do |s|
     s.user = 'philippe'
     s.host = 'philae'
-    s.root = '/home/philippe'
-    s.password = true
-  end
-
-  server 'hopper-2' do |s|
-    s.user = 'philippe'
-    s.host = 'philae'
-    s.root = '/home/philippe'
+    s.root = '/home/www/application'
     s.password = true
   end
   
@@ -31,15 +24,14 @@ Kanaveral::Base.deployer do
       run :git_push
     end 
 
-    remotes('hopper-0', 'hopper-2', 'hopper-1') do
-      run :setup
+    remotes('server-1', 'server-2') do
       run :git_pull
       run :bundler
       run :assets_precompile
       run :unicorn_upgrade
     end
 
-    remote('hopper-1') do
+    remote('server-2') do
       run :delayed_job_restart
     end
     
