@@ -1,5 +1,8 @@
 # Kanaveral
 
+Kanaveral is a flexible deployment/automation tool.
+Is purpose is to be use for app deployment and/or server installation.
+
 ## Installation
 
 Add this line to your application's Gemfile:
