@@ -1,7 +1,7 @@
 # Kanaveral
 
 Kanaveral is a flexible deployment/automation tool.
-Is purpose is to be use for app deployment and/or server installation.
+Its purpose is to be use for app deployment and/or server installation.
 
 ## Installation
 
