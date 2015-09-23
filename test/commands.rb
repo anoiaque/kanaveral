@@ -2,7 +2,7 @@ module Kanaveral
   module Command
     
     class Bundler
-      def instruction args={}
+      def instruction
         "bundle --quiet --without development test"
       end
       
@@ -12,17 +12,19 @@ module Kanaveral
     end
     
     class AssetsPrecompile
-      def instruction args={}
+      def instruction
+        "echo precompile assets"
       end
     end
     
     class UnicornUpgrade
-      def instruction args
+      def instruction
+        "echo upgrade unicron"
       end
     end
     
     class Changelog
-      def instruction args={}
+      def instruction
         "git log origin/master..master --format=short"
       end
       
@@ -32,7 +34,7 @@ module Kanaveral
     end
     
     class Newrelic
-      def instruction args={}
+      def instruction
         if context.commits.length > 0
           "echo '#{context.commits}' | newrelic deployments -c"
         else
@@ -52,19 +54,20 @@ module Kanaveral
     end
     
     class GitPull
-      def instruction args={}
+      def instruction
         "git pull origin master"        
       end
     end
     
     class Setup
-      def instruction args={}
-        "cd #{server.root}"
+      def instruction
+        "cd #{server.root} && ls"
       end
     end
     
     class DelayedJobRestart
-      def instruction args={}
+      def instruction
+        "echo DelayedJobRestart"
       end
     end
     
