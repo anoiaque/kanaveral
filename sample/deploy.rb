@@ -1,6 +1,8 @@
 require 'kanaveral'
 require_relative 'commands'
 
+#For now run via KANAVERAL_ENV=production ruby deploy.rb 
+
 Kanaveral::Base.deployer do
   
   server 'server-1' do |s|
