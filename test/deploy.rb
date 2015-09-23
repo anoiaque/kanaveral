@@ -32,7 +32,7 @@ Kanaveral::Base.deployer do
     end 
 
     remotes('hopper-0', 'hopper-2', 'hopper-1') do
-      run :cd_root
+      run :setup
       run :git_pull
       run :bundler
       run :assets_precompile

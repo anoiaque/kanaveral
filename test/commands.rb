@@ -57,7 +57,7 @@ module Kanaveral
       end
     end
     
-    class CdRoot
+    class Setup
       def instruction args={}
         "cd #{server.root}"
       end
