@@ -57,9 +57,13 @@ module Kanaveral
       cmd.context = @context
       cmd.name = command
       
-      Kanaveral::Output.command(cmd, args)
+      Kanaveral::Output.command((cmd.notice if cmd.respond_to?(:notice)) || "Run #{cmd.name}")
       
-      output = @ssh ? @ssh.exec!(cmd.instruction(args)) : `#{cmd.instruction(args)}`
+      output = if cmd.method(:instruction).arity == 0
+        @ssh ? @ssh.exec!(cmd.instruction) : `#{cmd.instruction}`
+      else
+        @ssh ? @ssh.exec!(cmd.instruction(args)) : `#{cmd.instruction(args)}`
+      end
 
       @context.send("#{args[:to]}=", output) if args[:to]
 

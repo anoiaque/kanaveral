@@ -6,7 +6,7 @@ module Kanaveral
         "bundle --quiet --without development test"
       end
       
-      def notice args={}
+      def notice
         "Run bundle"
       end
     end
@@ -26,7 +26,7 @@ module Kanaveral
         "git log origin/master..master --format=short"
       end
       
-      def notice args={}
+      def notice
         "Create changelog from commits"
       end
     end
@@ -42,11 +42,11 @@ module Kanaveral
     end
     
     class GitPush
-      def instruction args={}
+      def instruction
         "git push origin master"        
       end
       
-      def notice args={}
+      def notice
         "Push to origin/master"
       end
     end

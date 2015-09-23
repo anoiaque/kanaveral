@@ -21,12 +21,7 @@ module Kanaveral
       print Rainbow(text).green
     end
     
-    def self.command cmd, args
-      text = if cmd.respond_to?(:notice)
-        cmd.notice(args)
-      else
-        "Run #{cmd.name}"
-      end
+    def self.command text
       cr
       text = '-> ' + text
       notice(text)
