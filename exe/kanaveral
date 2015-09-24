@@ -1,1 +1,18 @@
 #!/usr/bin/env ruby
+require 'optparse'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: kanaveral [options]"
+
+  opts.on("-e environment", "Environment for deploy ie production") do |v|
+    options[:env] = v
+  end
+  
+  opts.on('-h', "Help") { puts opts; exit }
+  opts.parse!
+end
+
+ENV['KANAVERAL_ENV'] = options[:env]
+require "#{Dir.pwd}/kanaveral.rb"
