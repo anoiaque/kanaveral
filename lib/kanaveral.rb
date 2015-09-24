@@ -9,19 +9,51 @@ require 'kanaveral/output'
 module Kanaveral
   using Kanaveral::Extensions
   
-  class Server
-    attr_accessor :user, :host, :root, :name, :password
+  class MissingCommand < Exception
+    def initialize(command)
+      @command = command
+    end
     
-    def initialize name=nil
-      @name = name
+    def message
+      "Missing command : #{@command}"
     end
   end
+  
+  class Command < OpenStruct
+    @@commands = {}
+    
+    def self.load path
+      class_eval(File.read(path))
+      @@commands
+    end
+    
+    def self.command tag, &block
+      cmd = new
+      cmd.instance_eval(&block)
+      cmd.tag = tag
+      cmd.msg ||= -> { "Run #{cmd.tag}" }
+      
+      @@commands[tag] = cmd
+    end
+    
+    def command cmd
+      self.cmd = cmd
+    end
+    
+    def notice msg
+      self.msg = msg
+    end
+    
+  end
+  
+  class Server < OpenStruct;end
   
   class Deploy
     attr_accessor :local_commands, :remote_commands
     
     def initialize context
       @context = context
+      @commands = @context.commands
     end
     
     def local &block
@@ -52,18 +84,16 @@ module Kanaveral
     end
     
     def run command, args={}
-      cmd = cmd(command).new
-      cmd.server = @server
+      cmd = @commands[command]
+      raise MissingCommand.new(command) unless cmd
+      
       cmd.context = @context
-      cmd.name = command
+      cmd.context.server = @server
       
-      Kanaveral::Output.command((cmd.notice if cmd.respond_to?(:notice)) || "Run #{cmd.name}")
       
-      output = if cmd.method(:instruction).arity == 0
-        @ssh ? @ssh.exec!(cmd.instruction) : `#{cmd.instruction}`
-      else
-        @ssh ? @ssh.exec!(cmd.instruction(args)) : `#{cmd.instruction(args)}`
-      end
+      Kanaveral::Output.command(kall(cmd.msg))
+
+      output = @ssh ? @ssh.exec!(kall(cmd.cmd)) : `#{kall(cmd.cmd)}`
 
       @context.send("#{args[:to]}=", output) if args[:to]
 
@@ -73,13 +103,10 @@ module Kanaveral
     
     private
     
-    def cmd command
-      cmd = Object.const_get %(Kanaveral::Command::#{command.to_s.camelize})
-      cmd.send(:attr_accessor, :server)
-      cmd.send(:attr_accessor, :name)
-      cmd.send(:attr_accessor, :context)
-      cmd
+    def kall callee
+      callee.arity == 0 ? callee.call : callee.call(@context)
     end
+    
   end
   
   class Context < OpenStruct;end
@@ -89,7 +116,8 @@ module Kanaveral
     
     def server name
       @servers ||= {}
-      server = Server.new(name)
+      server = Server.new
+      server.name = name
       yield server
       @servers[name] = server
     end
@@ -98,10 +126,14 @@ module Kanaveral
       env_help()
       
       return unless ENV[ENV_KEY] == env.to_s 
-      
-      @context = Context.new(servers: @servers)
+
+      @context = Context.new(servers: @servers, commands: @commands)
       @deployer = Deploy.new(@context)
       @deployer.instance_eval(&block)
+    end
+    
+    def commands path
+      @commands = Command.load(path)
     end
   
     def self.deployer &block

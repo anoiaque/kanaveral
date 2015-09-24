@@ -1,69 +1,35 @@
-module Kanaveral
-  module Command
-    
-    class Bundler
-      def instruction
-        ". ~/.profile && cd #{server.root} && bundle --quiet --without development test"
-      end
-      
-      def notice
-        "Run bundle"
-      end
-    end
-    
-    class AssetsPrecompile
-      def instruction
-        "echo precompile assets"
-      end
-    end
-    
-    class UnicornUpgrade
-      def instruction
-        "echo upgrade unicron"
-      end
-    end
-    
-    class Changelog
-      def instruction
-        "git log origin/master..master --format=short"
-      end
-      
-      def notice
-        "Create changelog from commits"
-      end
-    end
-    
-    class Newrelic
-      def instruction
-        "echo '#{context.commits}' | newrelic deployments -c"
-      end
-    end
-    
-    class GitPush
-      def instruction
-        "git push origin master"        
-      end
-      
-      def notice
-        "Push to origin/master"
-      end
-    end
-    
-    class GitPull
-      def instruction
-        "git pull origin master"        
-      end
-      
-      def notice
-        "Pull from origin/master"
-      end
-    end
-    
-    class DelayedJobRestart
-      def instruction
-        "echo DelayedJobRestart"
-      end
-    end
-    
-  end
+command(:changelog) do
+  command -> { "git log origin/master..master --format=short" }
+  notice -> { "Create changelog from commits" }
+end
+
+command(:git_push) do
+  command -> { "git push origin master" }
+  notice -> { "Push to origin/master" }
+end
+
+command(:git_pull) do
+  command -> { "git pull origin master" }
+  notice -> { "Pull from origin/master" }
+end
+
+command(:assets_precompile) do
+  command -> { "echo precompile assets" }
+end
+
+command(:unicorn_upgrade) do
+  command -> { "echo unicorns upgrade" }
+end
+
+command(:delayed_job_restart) do
+  command -> { "echo restart delayed job worker" }
+end
+
+command(:newrelic) do
+  command -> { "echo '#{context.commits}' | newrelic deployments -c" }
+end
+
+command(:bundler) do
+  command ->(context) { ". ~/.profile && cd #{context.server.root} && bundle --quiet --without development test" }
+  notice -> { "Run Bundler install" }
 end

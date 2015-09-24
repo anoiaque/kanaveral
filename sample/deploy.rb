@@ -1,9 +1,10 @@
 require 'kanaveral'
-require_relative 'commands'
 
 #For now run via KANAVERAL_ENV=production ruby deploy.rb 
 
 Kanaveral::Base.deployer do
+  
+  commands(File.join(File.dirname(__FILE__), 'commands.rb'))
   
   server 'server-1' do |s|
     s.user = 'philippe'
@@ -18,13 +19,13 @@ Kanaveral::Base.deployer do
     s.root = '/home/www/application'
     s.password = true
   end
-  
+    
   deploy(:production) do
     
     local do
       run :changelog, to: :commits
       run :git_push
-    end 
+    end
 
     remotes('server-1', 'server-2') do
       run :git_pull
