@@ -26,7 +26,7 @@ command(:delayed_job_restart) do
 end
 
 command(:newrelic) do
-  command -> { "echo '#{context.commits}' | newrelic deployments -c" }
+  command ->(context) { "echo '#{context.commits}' | newrelic deployments -c" }
 end
 
 command(:bundler) do
