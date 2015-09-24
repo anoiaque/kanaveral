@@ -1,7 +1,5 @@
 require 'kanaveral'
 
-#For now run via KANAVERAL_ENV=production ruby deploy.rb 
-
 Kanaveral::Base.deployer do
   
   commands(File.join(File.dirname(__FILE__), 'commands.rb'))
