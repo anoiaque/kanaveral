@@ -123,7 +123,7 @@ module Kanaveral
     end
     
     def deploy env=:development, &block
-      env_help()
+      Kanaveral::Output.warn("Environment : #{ENV[ENV_KEY] || 'Not set via KANAVERAL_ENV'}")
       
       return unless ENV[ENV_KEY] == env.to_s 
 
@@ -140,13 +140,5 @@ module Kanaveral
       self.new.instance_eval(&block)
     end
     
-    private
-    
-    def env_help
-      Kanaveral::Output.warn("Environment : #{ENV[ENV_KEY] || 'Not set via KANAVERAL_ENV'}")
-      unless ENV[ENV_KEY]
-        Kanaveral::Output.warn("Pass Kanaveral environment as shell variable, ie KANAVERAL_ENV=production bundle exec ...")
-      end
-    end
   end
 end
