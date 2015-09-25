@@ -25,18 +25,17 @@ You can see an example under /sample, commands.rb contains the commands you use 
 the deployment script itself which use commands.rb.
 
 The main file must be named kanaveral.rb.
-The DSL define 3 main instruction :
+The DSL define 3 main instructions :
 
-- commands : indicate the path to load your commands.rb
+- **commands** : indicate the path to load your commands.rb
 
-- server : define your servers (user, host, app root ...) set password to true if you don't use ssh keys.
+- **server** : define your servers (user, host, app root ...). Set password to true if you don't use ssh keys.
 
-- deploy contain the main instructions block to deploy your application, with local blocks for commands to 
-run locally and remote blocks for commands to run on remote server. You can save outputs of commands to be
-used later via the keyword to: . The output result string will be available via context variable passed to
+- **deploy** contain the main instructions block to deploy your application, with **local** blocks for commands to 
+run locally and **remote** blocks for commands to run on remote server. You can save outputs of commands to be
+used later via the keyword to:. The output result string will be available via context variable passed to
 your lambda in commands.rb
 
-Example :
 
 ### Commands
 
@@ -48,7 +47,7 @@ command(<symbol>) do
   notice -> { "What i do"}
 end
 ```
-if notice lambda is not present a default message is displayed. If you don't need
+if *notice* lambda is not present a default message is displayed. If you don't need
 context just skip lambda parameter.
 
 **Example**
@@ -132,14 +131,20 @@ end
 
 ```
 
-Then in order to run just : 
+Then in order to run just run at the same path where your kanaveral.rb is: 
 
 	$ kanaveral -e production
 or 
 
 	$ bundle exec kanaveral -e production
 
-**kanaveral command look for a file named kanaveral.rb at the path it is launched**
+
+**NOTES**
+
+- **kanaveral command look for a file named kanaveral.rb at the path it is launched**
+
+- *context* and *server* are ruby OpenStruct so, you are free to define what you need. But user, host, root and
+password are reserved.
 
 ## Development
 
