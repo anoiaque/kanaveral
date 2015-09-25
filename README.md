@@ -146,6 +146,10 @@ or
 - *context* and *server* are ruby OpenStruct so, you are free to define what you need. But user, host, root and
 password are reserved.
 
+## Todo
+
+- Some generic and often used commands included in gem which can be used for ie rails application deployment(bundler, git commands ...)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
