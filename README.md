@@ -120,8 +120,8 @@ Kanaveral::Base.deployer do
       run :delayed_job_restart
     end
     
-    #at least run a command which use context.commits (this push a deployment
-    notification to newrelic with changelog made from commits)
+    #at least run a command which use context.commits.
+    #(this push a deployment notification to newrelic with changelog made from commits)
     local do
       run :newrelic
     end 
